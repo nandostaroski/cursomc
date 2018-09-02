@@ -115,9 +115,13 @@ public class Cliente implements Serializable {
         this.pedidos = pedidos;
     }
 
-    public String getSenha() { return senha; }
+    public String getSenha() {
+        return senha;
+    }
 
-    public void setSenha(String senha) { this.senha = senha; }
+    public void setSenha(String senha) {
+        this.senha = senha;
+    }
 
     @Override
     public int hashCode() {

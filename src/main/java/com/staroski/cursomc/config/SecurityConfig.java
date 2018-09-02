@@ -24,7 +24,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private Environment env;
 
     private static final String[] PUBLIC_MATCHERS = {
-        "/h2-console/**"
+            "/h2-console/**"
     };
 
     private static final String[] PUBLIC_MATCHERS_GET = {
@@ -39,17 +39,17 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             http.headers().frameOptions().disable();
         }
 
-       http.cors().and().csrf().disable();
+        http.cors().and().csrf().disable();
         http.authorizeRequests()
-        .antMatchers(HttpMethod.GET, PUBLIC_MATCHERS_GET).permitAll()
-       .antMatchers(PUBLIC_MATCHERS)
-       .permitAll().anyRequest().authenticated();
+                .antMatchers(HttpMethod.GET, PUBLIC_MATCHERS_GET).permitAll()
+                .antMatchers(PUBLIC_MATCHERS)
+                .permitAll().anyRequest().authenticated();
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
     }
 
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
-        final UrlBasedCorsConfigurationSource source =new UrlBasedCorsConfigurationSource();
+        final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", new CorsConfiguration().applyPermitDefaultValues());
         return source;
     }

@@ -1,12 +1,11 @@
 package com.staroski.cursomc.repositories;
 
+import com.staroski.cursomc.domain.Pedido;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import com.staroski.cursomc.domain.Pedido;
-
 @Repository
-public interface PedidoRepository extends JpaRepository<Pedido, Integer>  {
+public interface PedidoRepository extends JpaRepository<Pedido, Integer> {
 
 }
   

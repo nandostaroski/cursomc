@@ -8,11 +8,11 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class CursomcApplication implements CommandLineRunner {
 
 
-	public static void main(String[] args) {
-		SpringApplication.run(CursomcApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(CursomcApplication.class, args);
+    }
 
-	@Override
-	public void run(String... args) throws Exception {
-		}
+    @Override
+    public void run(String... args) throws Exception {
+    }
 }
