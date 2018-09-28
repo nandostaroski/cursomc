@@ -25,6 +25,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.net.URI;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ClienteService {
@@ -117,6 +118,19 @@ public class ClienteService {
     }
 
     public URI uploadProfilePicture(MultipartFile multipartFile) {
-        return s3Service.uploadFile(multipartFile);
+        UserSS user = UserService.authenticated();
+
+        if (user == null) {
+            throw new AuthorizationException("Acesso negado");
+        }
+        URI uri = s3Service.uploadFile(multipartFile);
+        Optional<Cliente> byId = repository.findById(user.getId());
+        Cliente cliente = byId.orElseThrow(() -> new ObjectNotFoundException(
+                "Objeto não encontrado. ID:" + user.getId() + ", Tipo:" + Cliente.class.getName()));
+
+        cliente.setImageUrl(uri.toString());
+        repository.save(cliente);
+
+        return uri;
     }
 }
