@@ -27,7 +27,6 @@ import org.springframework.web.multipart.MultipartFile;
 import java.awt.image.BufferedImage;
 import java.net.URI;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class ClienteService {
@@ -56,9 +55,10 @@ public class ClienteService {
     public Cliente find(Integer id) {
         UserSS user = UserService.authenticated();
 
-        if (user == null || !user.hasRole(Perfil.ADMIN) && !id.equals(user.getId())) { {
-            throw new AuthorizationException("Acesso negado") ;
-        }
+        if (user == null || !user.hasRole(Perfil.ADMIN) && !id.equals(user.getId())) {
+            {
+                throw new AuthorizationException("Acesso negado");
+            }
 
         }
         return repository.findById(id).orElseThrow(() -> new ObjectNotFoundException(
@@ -99,6 +99,17 @@ public class ClienteService {
         return repository.findAll();
     }
 
+    public Cliente findByEmail(String email) {
+
+        UserSS user = UserService.authenticated();
+        if (user == null || !user.hasRole(Perfil.ADMIN) && !email.equals(user.getUsername())) {
+            throw new AuthorizationException("Acesso negado");
+        }
+        return repository.findByEmail(email).orElseThrow(() -> new ObjectNotFoundException(
+                "Objeto não encontrado. ID:" + user.getId() + ", Tipo:" + Cliente.class.getName()));
+
+    }
+
     public Page<Cliente> findPage(Integer page, Integer linesPage, String orderBy, String direction) {
         PageRequest pageRequest = PageRequest.of(page, linesPage, Direction.valueOf(direction), orderBy);
 
@@ -137,11 +148,11 @@ public class ClienteService {
 
         BufferedImage jpgImage = imageService.getJpgImageFromFile(multipartFile);
         jpgImage = imageService.cropSquare(jpgImage);
-        jpgImage = imageService.resize(jpgImage,size);
+        jpgImage = imageService.resize(jpgImage, size);
 
         String fileName = prefix + user.getId() + ".jpg";
 
-        return s3Service.uploadFile(imageService.getInputStream(jpgImage,"jpg"),fileName,"image");
+        return s3Service.uploadFile(imageService.getInputStream(jpgImage, "jpg"), fileName, "image");
 
     }
 }
