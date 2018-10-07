@@ -13,6 +13,7 @@ import javax.validation.ConstraintValidatorContext;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 public class ClienteUpdateValidator implements ConstraintValidator<ClienteUpdate, ClienteDTO> {
 
@@ -34,9 +35,9 @@ public class ClienteUpdateValidator implements ConstraintValidator<ClienteUpdate
 
         List<FieldMessage> list = new ArrayList<>();
 
-        Cliente aux = repository.findByEmail(objDto.getEmail()).get();
+        Optional<Cliente> cliente = repository.findByEmail(objDto.getEmail());
 
-        if (aux != null && !aux.getId().equals(uriId)) {
+        if (cliente.isPresent() && !cliente.get().getId().equals(uriId)) {
             list.add(new FieldMessage("email", "Email já existente"));
         }
 

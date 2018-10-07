@@ -12,6 +12,12 @@ import java.util.Random;
 @Service
 public class AuthService {
 
+    private static final int START_UNICODE_UPPERCASE = 65;
+    private static final int START_UNICODE_LOWERCASE = 97;
+    private static final int START_UNICODE_NUMBER = 48;
+    private static final int ALPHABET_QUANTITY = 26;
+    private static final int DIGITS_QUANTITY = 10;
+
     @Autowired
     private ClienteRepository clienteRepository;
 
@@ -36,25 +42,37 @@ public class AuthService {
     private String newPassword() {
         char[] vet = new char[10];
         for (int i = 0; i < 10; i++) {
-            vet[i] = ramdomChar();
+            vet[i] = randomCharAlfaNumerico();
         }
         return new String(vet);
     }
 
-    private char ramdomChar() { //unicode-table.com/pt/
+    private char randomCharAlfaNumerico() { //unicode-table.com/pt/
         int opt = random.nextInt(3);
         switch (opt) {
-            case 0: { // digito
-                return (char) (random.nextInt(10) + 48);
+            case 0: {
+                return randomCharNumerico();
             }
-            case 1: { //letra maiuscula
-                return (char) (random.nextInt(26) + 65);
+            case 1: {
+                return randomCharLetraMaiuscula();
             }
-            case 2: { //letra minuscula
-                return (char) (random.nextInt(26) + 97);
+            case 2: {
+                return randomCharLetraMinuscula();
             }
         }
         return (char)0;
+    }
+
+    private char randomCharLetraMinuscula() {
+        return (char) (random.nextInt(ALPHABET_QUANTITY) + START_UNICODE_LOWERCASE);
+    }
+
+    private char randomCharLetraMaiuscula() {
+        return (char) (random.nextInt(ALPHABET_QUANTITY) + START_UNICODE_UPPERCASE);
+    }
+
+    private char randomCharNumerico() {
+        return (char) (random.nextInt(DIGITS_QUANTITY) + START_UNICODE_NUMBER);
     }
 
 }

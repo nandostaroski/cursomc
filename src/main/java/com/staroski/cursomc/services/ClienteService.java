@@ -56,10 +56,7 @@ public class ClienteService {
         UserSS user = UserService.authenticated();
 
         if (user == null || !user.hasRole(Perfil.ADMIN) && !id.equals(user.getId())) {
-            {
-                throw new AuthorizationException("Acesso negado");
-            }
-
+            throw new AuthorizationException("Acesso negado");
         }
         return repository.findById(id).orElseThrow(() -> new ObjectNotFoundException(
                 "Objeto não encontrado. ID:" + id + ", Tipo:" + Cliente.class.getName()));
@@ -142,9 +139,8 @@ public class ClienteService {
     public URI uploadProfilePicture(MultipartFile multipartFile) {
         UserSS user = UserService.authenticated();
 
-        if (user == null) {
-            throw new AuthorizationException("Acesso negado");
-        }
+        if (user == null) throw new AuthorizationException("Acesso negado");
+
 
         BufferedImage jpgImage = imageService.getJpgImageFromFile(multipartFile);
         jpgImage = imageService.cropSquare(jpgImage);
